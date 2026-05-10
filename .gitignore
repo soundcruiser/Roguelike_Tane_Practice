@@ -1,0 +1,38 @@
+[Ll]ibrary/
+[Tt]emp/
+[Oo]bj/
+[Bb]uild/
+[Bb]uilds/
+[Ll]ogs/
+[Uu]ser[Ss]ettings/
+[Mm]emoryCaptures/
+Recordings/
+
+# Addressables
+Assets/AddressableAssetsData/*/*.bin*
+
+# Visual Studio / Rider
+.vs/
+*.csproj
+*.sln
+*.suo
+*.tmp
+*.user
+*.userprefs
+*.pidb
+*.booproj
+*.svd
+*.pdb
+*.mdb
+*.opendb
+*.VC.db
+
+# Unity generated meta files for ignored folders
+/[Ll]ibrary/**/*.meta
+/[Tt]emp/**/*.meta
+/[Oo]bj/**/*.meta
+/[Bb]uild/**/*.meta
+/[Bb]uilds/**/*.meta
+
+# macOS
+.DS_Store
