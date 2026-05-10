@@ -1,9 +1,11 @@
 using UnityEngine;
 
+// シーン起動時の初期セットアップを行うクラスです。
 public class GameBootstrap : MonoBehaviour
 {
     private void Awake()
     {
+        // カメラ・マネージャー・ゲーム本体の順に準備します。
         SetupCamera();
 
         TurnManager turnManager = FindObjectOfType<TurnManager>();
@@ -24,6 +26,7 @@ public class GameBootstrap : MonoBehaviour
 
     private void SetupCamera()
     {
+        // Main Camera がなければ自動生成します。
         Camera cam = Camera.main;
         if (cam == null)
         {
@@ -31,6 +34,7 @@ public class GameBootstrap : MonoBehaviour
             cam.tag = "MainCamera";
         }
 
+        // 2D向け設定（正投影）にします。
         cam.orthographic = true;
         cam.orthographicSize = 6f;
         cam.transform.position = new Vector3(5.5f, 4.5f, -10f);
@@ -39,6 +43,7 @@ public class GameBootstrap : MonoBehaviour
     }
 }
 
+// テスト用の 1x1 白スプライトを使い回すための補助クラスです。
 public static class SpriteFactory
 {
     private static Sprite sharedSquare;
@@ -49,6 +54,7 @@ public static class SpriteFactory
         {
             if (sharedSquare == null)
             {
+                // 実アセットがまだ無い段階でも、見た目確認できるように動的生成します。
                 Texture2D texture = new Texture2D(1, 1);
                 texture.SetPixel(0, 0, Color.white);
                 texture.Apply();

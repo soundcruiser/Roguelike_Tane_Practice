@@ -1,36 +1,36 @@
 # Roguelike_Tane_Practice
 
-Unity 2D roguelike practice project.
+Unity 2Dローグライク練習プロジェクトです。
 
-## Current Playable State
+## 現在の実装状態（遊べる範囲）
 
-- Grid-based movement (WASD / Arrow Keys)
-- Turn-based flow (player action -> enemy action)
-- Basic combat (adjacent attack, HP, defeat)
-- Auto-generated simple test map
+- グリッド移動（`WASD` / 矢印キー）
+- ターン制進行（プレイヤー行動 -> 敵行動）
+- 基本戦闘（隣接攻撃、HP減少、撃破）
+- 簡易テストマップの自動生成
 
-## Project Setup
+## 起動手順（初心者向け）
 
-1. Open the project in Unity Hub.
-2. Open `Assets/Scenes/SampleScene.unity`.
-3. Create an empty GameObject in the scene.
-4. Attach `GameBootstrap` component.
-5. Press Play.
+1. Unity Hubでこのプロジェクトを開く
+2. `Assets/Scenes/SampleScene.unity` を開く
+3. Hierarchyで空のGameObjectを1つ作る
+4. そのGameObjectに `GameBootstrap` をアタッチする
+5. Playボタンを押す
 
-## Development Workflow
+## 開発ルール（安全に進めるため）
 
-- Keep `main` stable.
-- Create feature branches per task:
+- `main` は常に安定状態を保つ
+- 機能単位でブランチを切る
   - `feature/map-generation`
   - `feature/inventory`
   - `feature/ui-hud`
-- Commit in small units with clear intent.
-- Merge to `main` only after manual play test.
+- コミットは小さく、意図が分かる単位で行う
+- 手動プレイテスト後に `main` へマージする
 
-## Next Recommended Steps
+## 次に実装する候補
 
-1. Replace generated tiles with Tilemap-based rendering.
-2. Add multiple enemies and simple spawn rules.
-3. Add floor transitions (stairs).
-4. Add minimal HUD (HP + combat log).
-5. Add item pickup and inventory.
+1. 自動生成タイル描画をTilemapベースに置き換える
+2. 複数敵と簡単なスポーンルールを追加する
+3. 階段によるフロア遷移を追加する
+4. 最小HUD（HP表示 + 戦闘ログ）を追加する
+5. アイテム取得とインベントリを追加する

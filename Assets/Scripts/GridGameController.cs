@@ -1,8 +1,9 @@
 using UnityEngine;
 
+// マップ生成とユニット生成を担当するゲーム本体クラスです。
 public class GridGameController : MonoBehaviour
 {
-    [Header("Map")]
+    [Header("マップサイズ")]
     [SerializeField] private int mapWidth = 12;
     [SerializeField] private int mapHeight = 10;
 
@@ -13,6 +14,7 @@ public class GridGameController : MonoBehaviour
 
     public void Initialize()
     {
+        // データ上のマップを作ってから、見た目を生成し、最後にユニットを配置します。
         map = new GridMap(mapWidth, mapHeight);
         BuildVisualMap();
         SpawnUnits();
@@ -20,11 +22,13 @@ public class GridGameController : MonoBehaviour
 
     public bool CanMoveTo(Vector2Int pos)
     {
+        // 壁なら移動不可。
         if (!map.IsWalkable(pos))
         {
             return false;
         }
 
+        // 生存中のユニットがいるマスも移動不可。
         bool blockedByPlayer = Player != null && Player.IsAlive && Player.GridPosition == pos;
         bool blockedByEnemy = Enemy != null && Enemy.IsAlive && Enemy.GridPosition == pos;
         return !blockedByPlayer && !blockedByEnemy;
@@ -47,6 +51,7 @@ public class GridGameController : MonoBehaviour
 
     private void CreateTile(Vector2Int pos, bool walkable, Transform parent)
     {
+        // 1x1 のスプライトを並べて簡易的に床/壁を描画します。
         GameObject tile = new GameObject(walkable ? "Floor" : "Wall");
         tile.transform.SetParent(parent, false);
         tile.transform.position = new Vector3(pos.x, pos.y, 1f);
@@ -59,6 +64,7 @@ public class GridGameController : MonoBehaviour
 
     private void SpawnUnits()
     {
+        // プレイヤー生成
         GameObject playerObj = new GameObject("Player");
         SpriteRenderer playerRenderer = playerObj.AddComponent<SpriteRenderer>();
         playerRenderer.sprite = SpriteFactory.SharedSquare;
@@ -67,6 +73,7 @@ public class GridGameController : MonoBehaviour
         Player = playerObj.AddComponent<PlayerController>();
         Player.Setup(this, new Vector2Int(2, 2));
 
+        // 敵生成
         GameObject enemyObj = new GameObject("Enemy");
         SpriteRenderer enemyRenderer = enemyObj.AddComponent<SpriteRenderer>();
         enemyRenderer.sprite = SpriteFactory.SharedSquare;

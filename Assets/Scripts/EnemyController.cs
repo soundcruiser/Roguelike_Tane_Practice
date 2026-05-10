@@ -1,5 +1,6 @@
 using UnityEngine;
 
+// 敵の簡易AIです。プレイヤーへ近づき、隣接時は攻撃します。
 public class EnemyController : UnitBase
 {
     public void TakeTurn(PlayerController player)
@@ -11,6 +12,7 @@ public class EnemyController : UnitBase
 
         Vector2Int delta = player.GridPosition - GridPosition;
         int manhattan = Mathf.Abs(delta.x) + Mathf.Abs(delta.y);
+        // マンハッタン距離が1なら隣接しているので攻撃します。
         if (manhattan == 1)
         {
             Attack(player);
@@ -29,7 +31,7 @@ public class EnemyController : UnitBase
         Vector2Int xStep = new Vector2Int(delta.x == 0 ? 0 : (delta.x > 0 ? 1 : -1), 0);
         Vector2Int yStep = new Vector2Int(0, delta.y == 0 ? 0 : (delta.y > 0 ? 1 : -1));
 
-        // Try the dominant axis first so enemy movement feels direct.
+        // 差が大きい軸を優先して進むと、追跡が自然に見えます。
         if (Mathf.Abs(delta.x) >= Mathf.Abs(delta.y))
         {
             if (xStep != Vector2Int.zero && Game.CanMoveTo(GridPosition + xStep))

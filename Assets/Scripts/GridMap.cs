@@ -1,7 +1,9 @@
 using UnityEngine;
 
+// マップの通行可能/不可だけを管理する軽量クラスです。
 public class GridMap
 {
+    // true: 通れる床、false: 通れない壁。
     private readonly bool[,] walkable;
     private readonly int width;
     private readonly int height;
@@ -14,6 +16,7 @@ public class GridMap
         width = mapWidth;
         height = mapHeight;
         walkable = new bool[width, height];
+        // まずは固定レイアウトの簡易部屋を生成します。
         GenerateSimpleRoom();
     }
 
@@ -28,7 +31,7 @@ public class GridMap
             }
         }
 
-        // Add a small pillar for obstacle movement checks.
+        // 障害物チェック用に小さい柱を置きます。
         if (width > 7 && height > 7)
         {
             walkable[4, 4] = false;

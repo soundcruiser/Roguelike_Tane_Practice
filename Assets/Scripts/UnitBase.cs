@@ -1,7 +1,9 @@
 using UnityEngine;
 
+// プレイヤーと敵に共通する基底クラスです。
 public abstract class UnitBase : MonoBehaviour
 {
+    // Inspector から調整できるように SerializeField を付けています。
     [SerializeField] private int maxHp = 10;
     [SerializeField] private int attack = 3;
 
@@ -13,6 +15,7 @@ public abstract class UnitBase : MonoBehaviour
 
     public void Setup(GridGameController game, Vector2Int startPos)
     {
+        // 初期化時に参照と座標、HPを設定します。
         Game = game;
         GridPosition = startPos;
         CurrentHp = maxHp;
@@ -22,6 +25,7 @@ public abstract class UnitBase : MonoBehaviour
     protected bool TryMove(Vector2Int dir)
     {
         Vector2Int next = GridPosition + dir;
+        // 壁や他ユニットに塞がれていたら移動しません。
         if (!Game.CanMoveTo(next))
         {
             return false;
@@ -40,7 +44,7 @@ public abstract class UnitBase : MonoBehaviour
         }
 
         target.ReceiveDamage(attack);
-        Debug.Log($"{name} attacks {target.name} for {attack} damage.");
+        Debug.Log($"{name} が {target.name} に {attack} ダメージを与えた。");
     }
 
     public void ReceiveDamage(int amount)
@@ -49,7 +53,7 @@ public abstract class UnitBase : MonoBehaviour
         if (CurrentHp <= 0)
         {
             CurrentHp = 0;
-            Debug.Log($"{name} was defeated.");
+            Debug.Log($"{name} は倒れた。");
             gameObject.SetActive(false);
         }
     }
