@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 // プレイヤーと敵に共通する基底クラスです。
@@ -7,10 +8,14 @@ public abstract class UnitBase : MonoBehaviour
     [SerializeField] private int maxHp = 10;
     [SerializeField] private int attack = 3;
 
+    // HUD などが購読する戦闘ログイベント。全ユニット共通で1つ。
+    public static event Action<string> OnCombatLog;
+
     protected GridGameController Game;
 
     public Vector2Int GridPosition { get; protected set; }
     public int CurrentHp { get; private set; }
+    public int MaxHp => maxHp;
     public bool IsAlive => CurrentHp > 0;
 
     public void Setup(GridGameController game, Vector2Int startPos)
@@ -44,7 +49,9 @@ public abstract class UnitBase : MonoBehaviour
         }
 
         target.ReceiveDamage(attack);
-        Debug.Log($"{name} が {target.name} に {attack} ダメージを与えた。");
+        string msg = $"{name} が {target.name} に {attack} ダメージを与えた。";
+        Debug.Log(msg);
+        OnCombatLog?.Invoke(msg);
     }
 
     public void ReceiveDamage(int amount)
@@ -53,7 +60,9 @@ public abstract class UnitBase : MonoBehaviour
         if (CurrentHp <= 0)
         {
             CurrentHp = 0;
-            Debug.Log($"{name} は倒れた。");
+            string msg = $"{name} は倒れた。";
+            Debug.Log(msg);
+            OnCombatLog?.Invoke(msg);
             gameObject.SetActive(false);
         }
     }

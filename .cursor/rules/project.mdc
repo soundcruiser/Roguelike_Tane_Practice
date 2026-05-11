@@ -33,7 +33,7 @@ Unity 2D ターン制ローグライクの練習プロジェクト。
 - [x] ターン制進行（プレイヤー → 敵）
 - [x] 基本戦闘（隣接攻撃・HP減少・撃破）
 - [x] 部屋＋通路のランダムダンジョン生成
-- [ ] 最小HUD（HP表示 + 戦闘ログ）
+- [x] 最小HUD（HP表示 + 戦闘ログ）
 - [ ] 複数敵と部屋ごとのスポーンルール
 
 ## フェーズ 2：ゲームサイクル
@@ -71,13 +71,14 @@ Unity 2D ターン制ローグライクの練習プロジェクト。
 | `UnitBase` | プレイヤーと敵の共通基底クラス（HP・移動・攻撃） | UnitBase.cs |
 | `PlayerController` | キー入力 → 移動/攻撃 → ターン終了 | PlayerController.cs |
 | `EnemyController` | 簡易追跡AI。プレイヤーへ近づき隣接で攻撃 | EnemyController.cs |
+| `HudManager` | HP表示と戦闘ログのUI管理。Canvas を動的生成 | HudManager.cs |
 
 ### 依存の方向
 
 ```
 PlayerController / EnemyController
         ↓
-     UnitBase
+     UnitBase  ←（イベント購読）── HudManager
         ↓
   GridGameController
         ↓
@@ -85,6 +86,7 @@ PlayerController / EnemyController
 ```
 
 TurnManager は独立したシングルトン。各クラスから参照される。
+HudManager は UnitBase の静的イベントを購読するのみ。UnitBase 側は HudManager を知らない。
 
 ---
 

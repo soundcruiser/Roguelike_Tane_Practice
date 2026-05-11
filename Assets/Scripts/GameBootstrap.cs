@@ -1,8 +1,19 @@
 using UnityEngine;
 
 // シーン起動時の初期セットアップを行うクラスです。
+// RuntimeInitializeOnLoadMethod でシーンに配置しなくても自動起動します。
 public class GameBootstrap : MonoBehaviour
 {
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
+    private static void AutoBoot()
+    {
+        // シーンに手動配置されていなければ自動生成する
+        if (FindObjectOfType<GameBootstrap>() == null)
+        {
+            new GameObject("GameBootstrap").AddComponent<GameBootstrap>();
+        }
+    }
+
     private void Awake()
     {
         // カメラ・マネージャー・ゲーム本体の順に準備します。
@@ -22,6 +33,10 @@ public class GameBootstrap : MonoBehaviour
 
         game.Initialize();
         turnManager.Register(game.Player, game.Enemy);
+
+        // HUD を生成してプレイヤー情報を渡します。
+        HudManager hud = new GameObject("HudManager").AddComponent<HudManager>();
+        hud.Initialize(game.Player);
     }
 
     private void SetupCamera()
