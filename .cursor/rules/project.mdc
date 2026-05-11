@@ -72,6 +72,7 @@ Unity 2D ターン制ローグライクの練習プロジェクト。
 | `PlayerController` | キー入力 → 移動/攻撃 → ターン終了 | PlayerController.cs |
 | `EnemyController` | 簡易追跡AI。プレイヤーへ近づき隣接で攻撃 | EnemyController.cs |
 | `HudManager` | HP表示と戦闘ログのUI管理。Canvas を動的生成 | HudManager.cs |
+| `UnitStats` | ユニットのステータス定義（ScriptableObject）。Inspector で編集可能 | UnitStats.cs |
 
 ### 依存の方向
 
@@ -79,14 +80,16 @@ Unity 2D ターン制ローグライクの練習プロジェクト。
 PlayerController / EnemyController
         ↓
      UnitBase  ←（イベント購読）── HudManager
-        ↓
+        ↓  ↑
   GridGameController
-        ↓
-     GridMap（データのみ）
+        ↓         ↘
+     GridMap      UnitStats（データのみ・ScriptableObject）
+   （データのみ）
 ```
 
 TurnManager は独立したシングルトン。各クラスから参照される。
 HudManager は UnitBase の静的イベントを購読するのみ。UnitBase 側は HudManager を知らない。
+UnitStats は ScriptableObject。GameBootstrap が Resources.Load で読み込み、GridGameController → UnitBase へ渡す。
 
 ---
 

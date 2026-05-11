@@ -31,7 +31,11 @@ public class GameBootstrap : MonoBehaviour
             game = new GameObject("GridGameController").AddComponent<GridGameController>();
         }
 
-        game.Initialize();
+        // Resources/Data/ から各ユニットのステータス定義を読み込みます。
+        UnitStats playerStats = Resources.Load<UnitStats>("Data/PlayerStats");
+        UnitStats enemyStats = Resources.Load<UnitStats>("Data/EnemyStats");
+
+        game.Initialize(playerStats, enemyStats);
         turnManager.Register(game.Player, game.Enemy);
 
         // HUD を生成してプレイヤー情報を渡します。

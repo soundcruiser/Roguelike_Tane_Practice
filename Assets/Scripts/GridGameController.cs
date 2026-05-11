@@ -8,12 +8,17 @@ public class GridGameController : MonoBehaviour
     [SerializeField] private int mapHeight = 20;
 
     private GridMap map;
+    private UnitStats playerStats;
+    private UnitStats enemyStats;
 
     public PlayerController Player { get; private set; }
     public EnemyController Enemy { get; private set; }
 
-    public void Initialize()
+    public void Initialize(UnitStats playerUnitStats, UnitStats enemyUnitStats)
     {
+        playerStats = playerUnitStats;
+        enemyStats = enemyUnitStats;
+
         // データ上のマップを作ってから、見た目を生成し、最後にユニットを配置します。
         map = new GridMap(mapWidth, mapHeight);
         FitCameraToMap();
@@ -93,7 +98,7 @@ public class GridGameController : MonoBehaviour
         playerRenderer.color = Color.cyan;
         playerRenderer.sortingOrder = 10;
         Player = playerObj.AddComponent<PlayerController>();
-        Player.Setup(this, playerSpawn);
+        Player.Setup(this, playerSpawn, playerStats);
 
         // 敵生成
         GameObject enemyObj = new GameObject("Enemy");
@@ -102,7 +107,7 @@ public class GridGameController : MonoBehaviour
         enemyRenderer.color = Color.red;
         enemyRenderer.sortingOrder = 10;
         Enemy = enemyObj.AddComponent<EnemyController>();
-        Enemy.Setup(this, enemySpawn);
+        Enemy.Setup(this, enemySpawn, enemyStats);
     }
 
     // なるべく最初の部屋中心をプレイヤー開始位置にします。

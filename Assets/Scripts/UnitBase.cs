@@ -4,9 +4,7 @@ using UnityEngine;
 // プレイヤーと敵に共通する基底クラスです。
 public abstract class UnitBase : MonoBehaviour
 {
-    // Inspector から調整できるように SerializeField を付けています。
-    [SerializeField] private int maxHp = 10;
-    [SerializeField] private int attack = 3;
+    private UnitStats stats;
 
     // HUD などが購読する戦闘ログイベント。全ユニット共通で1つ。
     public static event Action<string> OnCombatLog;
@@ -15,15 +13,16 @@ public abstract class UnitBase : MonoBehaviour
 
     public Vector2Int GridPosition { get; protected set; }
     public int CurrentHp { get; private set; }
-    public int MaxHp => maxHp;
+    public int MaxHp => stats != null ? stats.maxHp : 0;
     public bool IsAlive => CurrentHp > 0;
 
-    public void Setup(GridGameController game, Vector2Int startPos)
+    public void Setup(GridGameController game, Vector2Int startPos, UnitStats unitStats)
     {
         // 初期化時に参照と座標、HPを設定します。
         Game = game;
+        stats = unitStats;
         GridPosition = startPos;
-        CurrentHp = maxHp;
+        CurrentHp = stats.maxHp;
         transform.position = new Vector3(startPos.x, startPos.y, 0f);
     }
 
@@ -48,8 +47,8 @@ public abstract class UnitBase : MonoBehaviour
             return;
         }
 
-        target.ReceiveDamage(attack);
-        string msg = $"{name} が {target.name} に {attack} ダメージを与えた。";
+        target.ReceiveDamage(stats.attack);
+        string msg = $"{name} が {target.name} に {stats.attack} ダメージを与えた。";
         Debug.Log(msg);
         OnCombatLog?.Invoke(msg);
     }
